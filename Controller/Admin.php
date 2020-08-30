@@ -6,6 +6,10 @@ namespace Detektivo\Controller;
 class Admin extends \Cockpit\AuthController {
 
     public function index() {
+        
+        if (!$this->module('cockpit')->hasaccess('cockpit', 'detektivo')) {
+            return $this->helper('admin')->denyRequest();
+        }
 
         $collections = $this->module('detektivo')->config('collections', []);
 
@@ -16,6 +20,10 @@ class Admin extends \Cockpit\AuthController {
     public function reindex() {
 
         \session_write_close();
+
+        if (!$this->module('cockpit')->hasaccess('cockpit', 'detektivo')) {
+            return $this->helper('admin')->denyRequest();
+        }
 
         $storage = $this->module('detektivo')->storage();
         $collection = $this->param('collection');

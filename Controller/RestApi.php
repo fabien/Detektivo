@@ -16,6 +16,10 @@ class RestApi extends \LimeExtra\Controller {
         if (!$this->module('collections')->exists($collection)) {
             return $this->stop('{"error": "Collection not found"}', 412);
         }
+        
+        if (!$this->module('collections')->hasaccess($collection['name'], 'search')) {
+            return $this->stop(401);
+        }
 
         $query = trim($this->param('q', ''));
 
